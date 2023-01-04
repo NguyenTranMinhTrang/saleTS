@@ -7,8 +7,8 @@ export type TabParamList = {
 
 export type StackParamList = {
     Tabs: TabParamList,
-    Detail: undefined,
-    AddProduct: undefined,
+    Detail: { id: number, reFresh: () => Promise<void> },
+    AddProduct: { reFresh: () => Promise<void> },
     ChartDay: undefined,
     PickFile: undefined,
 }

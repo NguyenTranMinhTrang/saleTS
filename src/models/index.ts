@@ -45,4 +45,12 @@ export interface Filter {
     price: number,
 }
 
+// Output
+export interface Output {
+    id: number,
+    idUser: number,
+    buy: any[],
+    date: Date,
+}
+
 

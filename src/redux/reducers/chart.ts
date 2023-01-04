@@ -2,6 +2,7 @@ import types from '../types';
 import { processColor } from 'react-native';
 import { COLORS } from '../../constants';
 import update from 'immutability-helper';
+import { AnyAction } from 'redux';
 
 const initialState = {
     xAxis: {
@@ -81,7 +82,7 @@ const initialState = {
     },
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: AnyAction) {
     switch (action.type) {
         case types.CHART_DATE:
             const newStateDate = update(state, {

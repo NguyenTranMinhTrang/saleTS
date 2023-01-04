@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { AnyAction } from 'redux';
 
 import product from './product';
 import chart from './chart';
@@ -10,7 +11,7 @@ const appReducer = combineReducers({
     chart,
 });
 
-const rootReducer = (state, action) => {
+const rootReducer = (state: any, action: AnyAction) => {
     if (action.type === types.CLEAR_REDUX_STATE) {
         state.product = undefined;
     }
@@ -19,3 +20,6 @@ const rootReducer = (state, action) => {
 };
 
 export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;
+

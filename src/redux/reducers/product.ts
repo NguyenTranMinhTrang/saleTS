@@ -1,11 +1,11 @@
 import types from '../types';
-import { Product, User, Input, InputDetail, Filter } from '../../models';
+import { Product, User, Input, InputDetail, Filter, Output } from '../../models';
 import { AnyAction } from 'redux';
 
 type state = {
     products: Product[],
     inputs: Input[],
-    outputs: [],
+    outputs: Output[],
     users: User[],
     inputDetail: InputDetail[],
     filter: Filter[],
@@ -22,7 +22,7 @@ const initialState: state = {
     filterOriginal: [],
 };
 
-export default function (state = initialState, action: AnyAction) {
+export default function (state: state = initialState, action: AnyAction) {
     switch (action.type) {
         case types.GET_PRODUCT:
             const data = action.payload;
@@ -75,4 +75,4 @@ export default function (state = initialState, action: AnyAction) {
         default:
             return { ...state };
     }
-};
+}

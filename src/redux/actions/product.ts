@@ -1,10 +1,9 @@
 import store from '../stores';
 import types from '../types';
 import { getItem, getData } from '../../localStorage';
-import _ from 'lodash';
 import { eachDayOfInterval } from 'date-fns';
-import { Product, Input, InputDetail, Filter } from '../../models';
-
+import { Product, Input, InputDetail, Filter, Output } from '../../models';
+import _ from 'lodash';
 
 const { dispatch } = store;
 
@@ -48,7 +47,7 @@ export const addInputList = (data: any) => ({
 });
 
 export const filterProduct = (products: Product[], inputDetail: InputDetail[], latestInput: Input | null) => {
-    const filterArray = _.map(products, (product: Product) => {
+    const filterArray: Filter[] = _.map(products, (product: Product) => {
         const inputObject = _.filter(inputDetail, (input: InputDetail) => {
             if (input.idProduct === product.id) {
                 return true;
@@ -73,24 +72,26 @@ export const filterProduct = (products: Product[], inputDetail: InputDetail[], l
                 }
                 // Case different price
                 else {
-                    const inputDetailChoose = _.find(inputObject, { id: latestInput.id });
+                    if (latestInput) {
+                        const inputDetailChoose = _.find(inputObject, { id: latestInput.id });
+
+                        if (inputDetailChoose) {
+                            const indexChoose = _.findIndex(inputObject, inputDetailChoose);
+
+                            const listRemove = _.filter(inputObject, (input: InputDetail, index: number) => {
+                                return index !== indexChoose;
+                            });
 
 
-                    const indexChoose = _.findIndex(inputObject, inputDetailChoose);
-
-
-                    const listRemove = _.filter(inputObject, (input: InputDetail, index: number) => {
-                        return index !== indexChoose;
-                    });
-
-
-                    const newDetail = _.pullAllWith(inputDetail, listRemove, _.isEqual);
-                    dispatch(updateInputDetail({ inputDetail: newDetail }));
-                    return {
-                        ...product,
-                        amount: inputDetailChoose.amount,
-                        price: Math.floor(inputDetailChoose.priceInput + inputDetailChoose.priceInput * product.profit),
-                    };
+                            const newDetail = _.pullAllWith(inputDetail, listRemove, _.isEqual);
+                            dispatch(updateInputDetail({ inputDetail: newDetail }));
+                            return {
+                                ...product,
+                                amount: inputDetailChoose.amount,
+                                price: Math.floor(inputDetailChoose.priceInput + inputDetailChoose.priceInput * product.profit),
+                            };
+                        }
+                    }
                 }
 
             }
@@ -110,7 +111,7 @@ export const filterProduct = (products: Product[], inputDetail: InputDetail[], l
                 price: 0,
             };
         }
-    });
+    }) as Filter[];
 
     return _.compact(filterArray);
 };
@@ -134,7 +135,7 @@ export const getDataFromLocalStorage = async () => {
         data = await getItem('listData');
     }
     const filterList = filterProduct(data.products, data.inputDetail, null);
-    const outputs = [];
+    const outputs: Output[] = [];
     const result = eachDayOfInterval({
         start: new Date(2022, 10, 28),
         end: new Date(2022, 11, 11),
@@ -150,25 +151,27 @@ export const getDataFromLocalStorage = async () => {
             return product.id === secondId;
         });
 
-        const output = {
-            id: i,
-            idUser: Math.random() * 2 + 1,
-            buy: [
-                {
-                    idProduct: id,
-                    amount: Math.floor(Math.random() * 10 + 5),
-                    price: object.price || 0,
-                },
-                {
-                    idProduct: secondId,
-                    amount: Math.floor(Math.random() * 10 + 5),
-                    price: secondObject.price || 0,
-                },
-            ],
-            date: result[Math.floor(Math.random() * (n - 1))],
-        };
+        if (object && secondObject) {
+            const output = {
+                id: i,
+                idUser: Math.random() * 2 + 1,
+                buy: [
+                    {
+                        idProduct: id,
+                        amount: Math.floor(Math.random() * 10 + 5),
+                        price: object.price || 0,
+                    },
+                    {
+                        idProduct: secondId,
+                        amount: Math.floor(Math.random() * 10 + 5),
+                        price: secondObject.price || 0,
+                    },
+                ],
+                date: result[Math.floor(Math.random() * (n - 1))],
+            };
 
-        outputs.push(output);
+            outputs.push(output);
+        }
     }
 
     dispatch(getDataList({ ...data, filter: filterList, outputs: outputs, filterOriginal: filterList }));

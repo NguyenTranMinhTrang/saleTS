@@ -1,48 +1,53 @@
 import store from '../stores';
 import types from '../types';
 import { endOfMonth, eachDayOfInterval, isEqual, format, eachWeekOfInterval, subDays, isWithinInterval, eachMonthOfInterval } from 'date-fns';
+import { Output } from '../../models';
 import _ from 'lodash';
 
 const { dispatch } = store;
 
-export const getChartByDate = (data) => ({
+type yLable = {
+    y: number
+}
+
+export const getChartByDate = (data: any) => ({
     type: types.CHART_DATE,
     payload: { ...data },
 });
 
-export const getChartByWeek = (data) => ({
+export const getChartByWeek = (data: any) => ({
     type: types.CHART_WEEK,
     payload: { ...data },
 });
 
-export const getChartByMonth = (data) => ({
+export const getChartByMonth = (data: any) => ({
     type: types.CHART_MONTH,
     payload: { ...data },
 });
 
-export const chartDays = (start, end) => {
+export const chartDays = (start: Date, end: Date) => {
 
-    const outputs = store.getState().product.outputs;
+    const outputs: Output[] = store.getState().product.outputs;
 
-    const days = eachDayOfInterval({
+    const days: Date[] = eachDayOfInterval({
         start: start,
         end: end,
     });
 
-    const xLabel = [];
+    const xLabel: string[] = [];
 
-    const result = _.map(days, (day) => {
-        const outputOfDate = _.filter(outputs, (output) => {
+    const result: yLable[] = _.map(days, (day: Date) => {
+        const outputOfDate: Output[] = _.filter(outputs, (output: Output) => {
             return isEqual(output.date, day);
         });
 
-        let listBuyProduct = _.map(outputOfDate, (output) => {
+        let listBuyProduct = _.map(outputOfDate, (output: Output) => {
             return output.buy;
         });
 
         listBuyProduct = _.flatten(listBuyProduct);
 
-        let total = _.reduce(listBuyProduct, (sum, product) => {
+        let total: number = _.reduce(listBuyProduct, (sum: number, product: any) => {
             return sum + product.price;
         }, 0);
 
@@ -53,33 +58,33 @@ export const chartDays = (start, end) => {
     dispatch(getChartByDate({ data: result, label: xLabel }));
 };
 
-export const chartWeeks = (start, end) => {
-    const weeks = eachWeekOfInterval({
+export const chartWeeks = (start: Date, end: Date) => {
+    const weeks: Date[] = eachWeekOfInterval({
         start: start,
         end: end,
     });
 
-    const mondays = _.map(weeks, (week) => {
+    const mondays: Date[] = _.map(weeks, (week) => {
         return subDays(week, 7);
     });
 
-    const outputs = store.getState().product.outputs;
-    const xLabel = [];
-    const result = _.map(weeks, (sunday, index) => {
-        const outputOfDate = _.filter(outputs, (output) => {
+    const outputs: Output[] = store.getState().product.outputs;
+    const xLabel: string[] = [];
+    const result: yLable[] = _.map(weeks, (sunday: Date, index: number) => {
+        const outputOfDate: Output[] = _.filter(outputs, (output) => {
             return isWithinInterval(output.date, {
                 start: mondays[index],
                 end: sunday,
             });
         });
 
-        let listBuyProduct = _.map(outputOfDate, (output) => {
+        let listBuyProduct = _.map(outputOfDate, (output: Output) => {
             return output.buy;
         });
 
         listBuyProduct = _.flatten(listBuyProduct);
 
-        let total = _.reduce(listBuyProduct, (sum, product) => {
+        let total: number = _.reduce(listBuyProduct, (sum: number, product: any) => {
             return sum + product.price;
         }, 0);
 
@@ -91,19 +96,19 @@ export const chartWeeks = (start, end) => {
     dispatch(getChartByWeek({ data: result, label: xLabel }));
 };
 
-export const chartMonths = (start, end) => {
+export const chartMonths = (start: Date, end: Date) => {
     const months = eachMonthOfInterval({
         start: start,
         end: end,
     });
 
-    const endMonths = _.map(months, (month) => {
+    const endMonths = _.map(months, (month: Date) => {
         return endOfMonth(month);
     });
 
     const outputs = store.getState().product.outputs;
-    const xLabel = [];
-    const result = _.map(months, (startMonth, index) => {
+    const xLabel: string[] = [];
+    const result: yLable[] = _.map(months, (startMonth, index) => {
         const outputOfDate = _.filter(outputs, (output) => {
             return isWithinInterval(output.date, {
                 start: startMonth,

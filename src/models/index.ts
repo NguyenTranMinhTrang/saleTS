@@ -1,3 +1,5 @@
+import { ImageURISource, ImageRequireSource } from 'react-native';
+
 // product
 export interface Product {
     id: number,
@@ -53,4 +55,15 @@ export interface Output {
     date: Date,
 }
 
+// Response
+export interface Response {
+    code: number,
+    message: string,
+    [index: string]: any,
+}
 
+export type ImageSourcePropType = number | ImageURISource | ImageURISource[] | ImageRequireSource;
+
+export type Props = {
+    children?: JSX.Element,
+};

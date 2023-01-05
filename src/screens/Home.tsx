@@ -21,22 +21,28 @@ import { Item, Search } from '../components';
 import actions from '../redux/actions';
 import MainLayout from './MainLayout';
 import { useTypedSelector } from '../redux';
-import { StackParamList } from '../navigation/types';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Filter } from '../models';
 
-type Props = NativeStackScreenProps<StackParamList, 'Tabs'>;
+// Type
+import { HomeScreenProps } from '../navigation/types';
 type OnScrollEventHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+type PropsNotificationNav = {
+    id: number,
+    screen: string
+}
 
-const Home = ({ navigation, route }: Props) => {
+const Home = ({ navigation, route }: HomeScreenProps) => {
     const [loading, setLoading] = React.useState<boolean>(true);
     const filter: Filter[] = useTypedSelector((state) => state.product.filter);
-    const text = React.useRef<TextInput>();
+    const text = React.createRef<TextInput>();
 
     React.useEffect(() => {
         if (route.params && route.params.screen) {
-            const { id, screen } = route.params;
-            navigation.navigate(screen, { id, reFresh });
+            // Notification
+            const { id, screen }: PropsNotificationNav = route.params as PropsNotificationNav;
+            if (screen === 'Detail') {
+                navigation.navigate(screen, { id, reFresh });
+            }
         }
         else if (route.params && route.params.receive) {
             console.log('Receive data: ', route.params.receive);
@@ -44,9 +50,6 @@ const Home = ({ navigation, route }: Props) => {
             Alert.alert('Receive from another app',
                 `Name: ${name} - Profit: ${profit} - Description: ${description} - Rate: ${rate}`
             );
-        }
-        else {
-            console.log('No object: ', route);
         }
     }, [route.params]);
 

@@ -177,11 +177,11 @@ export const getDataFromLocalStorage = async () => {
     dispatch(getDataList({ ...data, filter: filterList, outputs: outputs, filterOriginal: filterList }));
 };
 
-export const updateProduct = (item: any) => {
+export const updateProduct = (item: Product) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             const products = store.getState().product.products;
-            const newProductList = _.map(products, (product: Product) => {
+            const newProductList: Product[] = _.map(products, (product: Product) => {
                 if (product.id === item.id) {
                     return {
                         ...product,

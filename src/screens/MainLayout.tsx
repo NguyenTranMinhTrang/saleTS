@@ -2,10 +2,7 @@ import React from 'react';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { COLORS } from '../constants';
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
-
-type Props = {
-    children: JSX.Element,
-};
+import { Props } from '../models';
 
 type State = NetInfoState | null;
 
@@ -32,7 +29,7 @@ const MainLayout = ({ children }: Props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.black,
     },
 });
 

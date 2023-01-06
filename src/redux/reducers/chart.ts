@@ -3,8 +3,17 @@ import { processColor } from 'react-native';
 import { COLORS } from '../../constants';
 import update from 'immutability-helper';
 import { AnyAction } from 'redux';
+import { xAxis, BarLineChartBase, LineData, ChartLegend, ChartBase } from 'react-native-charts-wrapper';
 
-const initialState = {
+type state = {
+    xAxis: xAxis,
+    yAxis: BarLineChartBase['yAxis'],
+    data: LineData,
+    legend: ChartLegend,
+    marker: ChartBase['marker'],
+}
+
+const initialState: state = {
     xAxis: {
         textColor: processColor('white'),
         textSize: 14,
@@ -52,7 +61,6 @@ const initialState = {
                     lineWidth: 1.5,
                     drawCircles: true,
                     drawCubicIntensity: 0.5,
-                    drawCubic: false,
                     drawHighlightIndicators: false,
                     color: processColor(COLORS.lightGreen),
                     drawFilled: true,
@@ -78,71 +86,79 @@ const initialState = {
         enabled: true,
         markerColor: processColor(COLORS.primary),
         textColor: processColor('white'),
-        markerFontSize: 16,
     },
 };
 
 export default function (state = initialState, action: AnyAction) {
     switch (action.type) {
         case types.CHART_DATE:
-            const newStateDate = update(state, {
-                xAxis: {
-                    $set: {
-                        ...state.xAxis,
-                        valueFormatter: action.payload.label,
+            if (state.data.dataSets) {
+                const newStateDate = update(state, {
+                    xAxis: {
+                        $set: {
+                            ...state.xAxis,
+                            valueFormatter: action.payload.label,
+                        },
                     },
-                },
-                data: {
-                    $set: {
-                        dataSets: [{
-                            ...state.data.dataSets[0],
-                            values: action.payload.data,
-                        }],
+                    data: {
+                        $set: {
+                            dataSets: [{
+                                ...state.data.dataSets[0],
+                                values: action.payload.data,
+                            }],
+                        },
                     },
-                },
-            });
+                });
+                return { ...newStateDate };
 
-            return { ...newStateDate };
+            }
+            return state;
 
         case types.CHART_WEEK:
-            const newStateWeek = update(state, {
-                xAxis: {
-                    $set: {
-                        ...state.xAxis,
-                        valueFormatter: action.payload.label,
+            if (state.data.dataSets) {
+                const newStateWeek = update(state, {
+                    xAxis: {
+                        $set: {
+                            ...state.xAxis,
+                            valueFormatter: action.payload.label,
+                        },
                     },
-                },
-                data: {
-                    $set: {
-                        dataSets: [{
-                            ...state.data.dataSets[0],
-                            values: action.payload.data,
-                        }],
+                    data: {
+                        $set: {
+                            dataSets: [{
+                                ...state.data.dataSets[0],
+                                values: action.payload.data,
+                            }],
+                        },
                     },
-                },
-            });
+                });
 
-            return { ...newStateWeek };
+                return { ...newStateWeek };
+            }
+            return state;
 
         case types.CHART_MONTH:
-            const newStateMonth = update(state, {
-                xAxis: {
-                    $set: {
-                        ...state.xAxis,
-                        valueFormatter: action.payload.label,
+            if (state.data.dataSets) {
+                const newStateMonth = update(state, {
+                    xAxis: {
+                        $set: {
+                            ...state.xAxis,
+                            valueFormatter: action.payload.label,
+                        },
                     },
-                },
-                data: {
-                    $set: {
-                        dataSets: [{
-                            ...state.data.dataSets[0],
-                            values: action.payload.data,
-                        }],
+                    data: {
+                        $set: {
+                            dataSets: [{
+                                ...state.data.dataSets[0],
+                                values: action.payload.data,
+                            }],
+                        },
                     },
-                },
-            });
+                });
 
-            return { ...newStateMonth };
+                return { ...newStateMonth };
+            }
+            return state;
         default:
             return state;
     }

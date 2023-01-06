@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, Text } from 'react-native';
 import { COLORS, FONTS, SIZES } from '../constants';

@@ -4,7 +4,7 @@ import { COLORS, SIZES, FONTS } from '../constants';
 import images from '../constants/images';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Formik, FastField } from 'formik';
+import { Formik, FastField, FieldProps, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { InputField } from '../components';
 import actions from '../redux/actions';
@@ -13,7 +13,6 @@ import _, { debounce } from 'lodash';
 import { useTypedSelector } from '../redux';
 import { Product, Response } from '../models';
 import { DetailScreenProps } from '../navigation/types';
-import { FieldProps, FormikProps } from 'formik';
 
 interface FormValues {
     id: number,

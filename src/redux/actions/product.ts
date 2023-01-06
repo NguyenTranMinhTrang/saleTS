@@ -233,15 +233,15 @@ export const addProduct = (product: any) => {
 export const addInput = (input: any) => {
     return new Promise((resolve) => {
         setTimeout(() => {
-            const inputs = store.getState().product.inputs;
-            const inputDetail = store.getState().product.inputDetail;
-            const id = Date.now();
-            const newInput = {
+            const inputs: Input[] = store.getState().product.inputs;
+            const inputDetail: InputDetail[] = store.getState().product.inputDetail;
+            const id: number = Date.now();
+            const newInput: Input = {
                 id: id,
                 date: input.date,
             };
 
-            const newInputDetail = _.map(input.itemDetail, (value: any) => {
+            const newInputDetail: InputDetail[] = _.map(input.itemDetail, (value: any) => {
                 return {
                     id: id,
                     idProduct: value.item.id,

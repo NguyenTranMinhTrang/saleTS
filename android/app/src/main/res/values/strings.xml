@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyApp</string>
     <string name="default_notification_channel_id">channel-id-1</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">jb9NmY0IuSFmG_PFvIe3w4b23HC5OiB_EcFqB</string>
 </resources>

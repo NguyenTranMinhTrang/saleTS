@@ -1,0 +1,68 @@
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { COLORS, FONTS, SIZES } from '../constants';
+import SelectDropdown from 'react-native-select-dropdown';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ItemPicker from './ItemPicker';
+import { useTypedSelector } from '../redux';
+import { Product } from '../models';
+
+type Props = {
+    setItem: (item: Product) => void,
+}
+
+const Combobox = ({ setItem }: Props) => {
+
+    const products: Product[] = useTypedSelector((state) => state.product.products);
+
+    return (
+        <SelectDropdown
+            data={products}
+            onSelect={(selectedItem: Product) => {
+                setItem(selectedItem);
+            }}
+            renderCustomizedRowChild={(item: Product) => {
+                return (
+                    <ItemPicker name={item.name} />
+                );
+
+            }}
+            rowStyle={styles.rowStyle}
+
+            buttonStyle={styles.buttonStyle}
+
+            buttonTextStyle={styles.buttonText}
+
+            renderDropdownIcon={isOpened => {
+                return <MaterialIcons name={isOpened ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} color={COLORS.white} size={30} />;
+            }}
+
+            buttonTextAfterSelection={(selectedItem) => {
+                return selectedItem.name;
+            }}
+
+            onChangeSearchInputText={() => { }}
+        />
+    );
+};
+
+const styles = StyleSheet.create({
+    rowStyle: {
+        height: 70,
+        width: '100%',
+        backgroundColor: COLORS.black,
+
+    },
+    buttonStyle: {
+        flex: 1,
+        backgroundColor: COLORS.lightGray,
+        height: 60,
+        borderRadius: SIZES.radius,
+    },
+    buttonText: {
+        ...FONTS.h3,
+        color: COLORS.white,
+    },
+});
+
+export default Combobox;

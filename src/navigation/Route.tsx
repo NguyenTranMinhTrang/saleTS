@@ -1,15 +1,23 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, getStateFromPath, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './Tabs';
 import { Detail, AddProduct, ChartDay, PickFile } from '../screens';
 import { navigationRef } from '../RootNavigation';
 import { StackParamList } from './types';
 
+type ReceiveType = {
+    id: number,
+    name: string,
+    profit: number,
+    description: string,
+    rate: number,
+}
+
 const Stack = createNativeStackNavigator<StackParamList>();
 
-/* const linking = {
-    prefixes: ['sale://'],
+const linking: LinkingOptions<StackParamList> = {
+    prefixes: ['salets://'],
     config: {
         initialRouteName: 'Tabs',
         screens: {
@@ -22,46 +30,47 @@ const Stack = createNativeStackNavigator<StackParamList>();
             },
         },
     },
-    getStateFromPath: (path, options) => {
-        console.log('Call');
+    getStateFromPath: (path: string, options: any) => {
         const state = getStateFromPath(path, options);
-        console.log('Call 2');
-        const newState = {
-            ...state,
-            routes: state.routes.map(route => {
-                if (route.name === 'Tabs' && route.state.routes[0].name === 'Home') {
-                    const { id, name, profit, description, rate } = route.state.routes[0].params;
-                    const receiveData = {
-                        id,
-                        name,
-                        profit,
-                        description,
-                        rate,
-                    };
-                    console.log('Route state before: ', route.state.routes[0]);
-                    const newRoute = {
-                        ...route.state.routes[0],
-                        params: { receive: receiveData },
-                    };
-                    route.state.routes[0] = newRoute;
-                    console.log('Route state after: ', route.state.routes[0]);
+        if (state) {
+            const newState = {
+                ...state,
+                routes: state.routes.map(route => {
+                    if (route.name === 'Tabs' && route.state && route.state.routes[0].name === 'Home') {
+                        const { id, name, profit, description, rate }: ReceiveType = route.state.routes[0].params as ReceiveType;
+                        const receiveData: ReceiveType = {
+                            id,
+                            name,
+                            profit,
+                            description,
+                            rate,
+                        };
+                        console.log('Route state before: ', route.state.routes[0]);
+                        const newRoute = {
+                            ...route.state.routes[0],
+                            params: { receive: receiveData },
+                        };
+                        route.state.routes[0] = newRoute;
+                        console.log('Route state after: ', route.state.routes[0]);
 
-                    return {
-                        ...route,
-                    };
-                } else {
-                    return route;
-                }
-            }),
-        };
-        console.log('Call 3');
-        return newState;
+                        return {
+                            ...route,
+                        };
+                    } else {
+                        return route;
+                    }
+                }),
+            };
+
+            return newState;
+
+        }
     },
-}; */
+};
 
 const Route = () => {
     return (
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer ref={navigationRef} linking={linking}>
             <Stack.Navigator
                 initialRouteName="Tabs"
                 screenOptions={{

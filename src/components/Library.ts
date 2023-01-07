@@ -21,16 +21,13 @@ const LibraryLauch = async () => {
     return new Promise((resolve) => {
         if (grantedstorage === PermissionsAndroid.RESULTS.GRANTED) {
             launchImageLibrary(options, (res: ImagePickerResponse) => {
-                console.log('Response = ', res);
                 if (res.didCancel) {
-                    console.log('User cancelled image picker');
                     resolve({
                         code: 0,
                         message: 'User cancelled image picker',
                     });
                 } else
                     if (res.errorCode) {
-                        console.log('ImagePicker Error: ', res.errorCode);
                         resolve({
                             code: 0,
                             message: `ImagePicker Error: ${res.errorMessage}`,

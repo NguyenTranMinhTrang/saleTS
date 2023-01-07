@@ -46,13 +46,17 @@ const ChartDay = ({ navigation, route }: ChartDayScreenProps) => {
         setData(newData);
     };
 
+    const navigateBack = () => navigation.goBack();
+
+    const onPress = () => setShow(true);
+
     return (
         <MainLayout>
             <View style={styles.container}>
                 <View style={styles.containHeader}>
                     <TouchableOpacity
                         style={styles.buttonBack}
-                        onPress={() => navigation.goBack()}
+                        onPress={navigateBack}
                     >
                         <AntDesign
                             size={30}
@@ -88,7 +92,7 @@ const ChartDay = ({ navigation, route }: ChartDayScreenProps) => {
                 >
                     <TouchableOpacity
                         style={styles.containButton}
-                        onPress={() => setShow(true)}
+                        onPress={onPress}
                     >
                         <AntDesign
                             size={35}

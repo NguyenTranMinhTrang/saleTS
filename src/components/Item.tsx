@@ -16,11 +16,14 @@ const Item = ({ item, onPress, onLongPress }: Props) => {
     const { name, price, rate, amount, image } = item;
     const src: ImageSourcePropType = image ? { uri: image } : images.productImage;
 
+    const onPressButton = () => onPress(item);
+    const onLongPressButton = () => onLongPress(item);
+
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => { onPress(item); }}
-            onLongPress={() => { onLongPress(item); }}
+            onPress={onPressButton}
+            onLongPress={onLongPressButton}
         >
             <View style={styles.containerImage}>
                 <Image

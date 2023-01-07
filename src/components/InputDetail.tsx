@@ -24,13 +24,24 @@ type Props = {
 }
 
 const InputDetail = ({ index, remove, insert, detail, setShow, setIndex }: Props) => {
+
+    const onPress = () => {
+        setShow(true);
+        setIndex(index);
+    };
+
+    const onPressAdd = () => {
+        setShow(true);
+        setIndex(index + 1);
+        insert(index + 1, { item: {}, amount: 0, priceInput: 0 });
+    };
+
+    const onPressRemove = () => remove(index);
+
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => {
-                setShow(true);
-                setIndex(index);
-            }}
+            onPress={onPress}
 
         >
             <Text style={{ ...FONTS.h3, color: COLORS.white }}>{index + 1}.</Text>
@@ -45,18 +56,14 @@ const InputDetail = ({ index, remove, insert, detail, setShow, setIndex }: Props
 
             <TouchableOpacity
                 style={styles.buttonAdd}
-                onPress={() => {
-                    setShow(true);
-                    setIndex(index + 1);
-                    insert(index + 1, { item: {}, amount: 0, priceInput: 0 });
-                }}
+                onPress={onPressAdd}
             >
                 <Text style={{ ...FONTS.h3, color: COLORS.white }}>+</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.buttonRemove}
-                onPress={() => remove(index)}
+                onPress={onPressRemove}
             >
                 <Text style={{ ...FONTS.h3, color: COLORS.white }}>-</Text>
             </TouchableOpacity>

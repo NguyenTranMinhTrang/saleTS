@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SIZES, COLORS, FONTS } from '../constants';
-import { FastField, FieldArray, useFormikContext, FieldProps, ArrayHelpers } from 'formik';
+import { FastField, FieldArray, useFormikContext, FieldProps, ArrayHelpers, FieldArrayRenderProps } from 'formik';
 import InputField from './InputField';
 import InputDetail from './InputDetail';
 import ModalAdd from './ModalAdd';
@@ -32,6 +32,72 @@ const ProductDetail = () => {
     const arrayHelpersRef = React.useRef<ArrayHelpers>();
     const [index, setIndex] = React.useState<number>(0);
 
+    const onPressRemove = () => {
+        if (values.delete <= 0) {
+            setErrors({
+                ...errors,
+                delete: 'Min number is 1!',
+            });
+        }
+        else if (values.delete > values.itemDetail.length) {
+            setErrors({
+                ...errors,
+                delete: 'Number is invalid!',
+            });
+        }
+        else {
+            arrayHelpersRef.current?.remove(values.delete - 1);
+        }
+    };
+
+    const render = (arrayHelpers: FieldArrayRenderProps) => {
+        arrayHelpersRef.current = arrayHelpers;
+        return (
+            <View
+                style={styles.arrayContain}
+            >
+                {
+                    values.itemDetail && values.itemDetail.length > 0 ? (
+                        <ScrollView
+                            style={{
+                                height: SIZES.height * 0.2,
+                            }}
+                        >
+                            {
+                                values.itemDetail.map((detail, indexDetail) => {
+                                    return (
+                                        <InputDetail
+                                            detail={detail}
+                                            key={indexDetail}
+                                            index={indexDetail}
+                                            insert={arrayHelpers.insert}
+                                            remove={arrayHelpers.remove}
+                                            setShow={setShow}
+                                            setIndex={setIndex}
+                                        />
+                                    );
+                                })
+                            }
+                        </ScrollView>
+                    ) :
+                        (
+                            <TouchableOpacity
+                                style={styles.buttonAdd}
+
+                                onPress={() => {
+                                    setShow(true);
+                                    arrayHelpers.push({ item: {}, amount: 0, priceInput: 0 });
+                                }}
+                            >
+                                <Text style={{ ...FONTS.h3, color: COLORS.white }}>Add item details</Text>
+                            </TouchableOpacity>
+                        )
+
+                }
+            </View>
+        );
+    };
+
     return (
         <View>
             <View
@@ -53,23 +119,7 @@ const ProductDetail = () => {
 
                 <TouchableOpacity
                     style={styles.buttonRemove}
-                    onPress={() => {
-                        if (values.delete <= 0) {
-                            setErrors({
-                                ...errors,
-                                delete: 'Min number is 1!',
-                            });
-                        }
-                        else if (values.delete > values.itemDetail.length) {
-                            setErrors({
-                                ...errors,
-                                delete: 'Number is invalid!',
-                            });
-                        }
-                        else {
-                            arrayHelpersRef.current?.remove(values.delete - 1);
-                        }
-                    }}
+                    onPress={onPressRemove}
                 >
                     <Text style={{ ...FONTS.h3, color: COLORS.white }}>-</Text>
                 </TouchableOpacity>
@@ -79,55 +129,7 @@ const ProductDetail = () => {
 
             <FieldArray
                 name="itemDetail"
-                render={(arrayHelpers) => {
-                    arrayHelpersRef.current = arrayHelpers;
-                    return (
-                        <View
-                            style={styles.arrayContain}
-                        >
-                            {
-                                values.itemDetail && values.itemDetail.length > 0 ? (
-                                    <ScrollView
-                                        style={{
-                                            height: SIZES.height * 0.2,
-                                        }}
-                                    >
-                                        {
-                                            values.itemDetail.map((detail, indexDetail) => {
-                                                return (
-                                                    <InputDetail
-                                                        detail={detail}
-                                                        key={indexDetail}
-                                                        index={indexDetail}
-                                                        insert={arrayHelpers.insert}
-                                                        remove={arrayHelpers.remove}
-                                                        setShow={setShow}
-                                                        setIndex={setIndex}
-                                                    />
-                                                );
-                                            })
-                                        }
-                                    </ScrollView>
-                                ) :
-                                    (
-                                        <TouchableOpacity
-                                            style={styles.buttonAdd}
-
-                                            onPress={() => {
-                                                setShow(true);
-                                                arrayHelpers.push({ item: {}, amount: 0, priceInput: 0 });
-                                            }}
-                                        >
-                                            <Text style={{ ...FONTS.h3, color: COLORS.white }}>Add item details</Text>
-                                        </TouchableOpacity>
-                                    )
-
-                            }
-                        </View>
-                    );
-
-                }
-                }
+                render={render}
             />
         </View>
     );

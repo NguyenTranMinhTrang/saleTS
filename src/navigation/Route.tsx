@@ -45,14 +45,11 @@ const linking: LinkingOptions<StackParamList> = {
                             description,
                             rate,
                         };
-                        console.log('Route state before: ', route.state.routes[0]);
                         const newRoute = {
                             ...route.state.routes[0],
                             params: { receive: receiveData },
                         };
                         route.state.routes[0] = newRoute;
-                        console.log('Route state after: ', route.state.routes[0]);
-
                         return {
                             ...route,
                         };

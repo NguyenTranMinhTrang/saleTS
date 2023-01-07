@@ -42,6 +42,8 @@ const ModalPickImage = ({ show, setShow, setImage }: Props) => {
         }
     };
 
+    const onPress = () => setShow(false);
+
     return (
         <Modal
             animationType="slide"
@@ -51,7 +53,7 @@ const ModalPickImage = ({ show, setShow, setImage }: Props) => {
         >
             <Pressable
                 style={styles.press}
-                onPress={() => setShow(false)}
+                onPress={onPress}
             >
                 <View style={styles.container}>
                     <Text style={{ ...FONTS.h1_light, color: COLORS.black }}>Select an option</Text>

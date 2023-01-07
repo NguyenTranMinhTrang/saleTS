@@ -37,6 +37,9 @@ const Search = forwardRef<TextInput, Props>((props, ref) => {
         }, 300, { leading: true }),
         []
     );
+
+    const onChangeText = (text: string) => debouncedResults(text, filterOriginal);
+
     return (
         <View>
             <View style={styles.containerSearch} >
@@ -49,7 +52,7 @@ const Search = forwardRef<TextInput, Props>((props, ref) => {
                 </TouchableOpacity>
                 <TextInput
                     style={styles.textInput}
-                    onChangeText={(text) => debouncedResults(text, filterOriginal)}
+                    onChangeText={onChangeText}
                     ref={ref}
                 />
             </View>

@@ -59,6 +59,27 @@ const Detail = ({ navigation, route }: DetailScreenProps) => {
         route.params.reFresh();
     };
 
+    const navigateBack = () => navigation.goBack();
+
+    const onSubmit = async (values: FormValues) => {
+        setLoading(true);
+        const convertValue: Product = {
+            ...values,
+            profit: Number(values.profit),
+        };
+        const result: Response = await actions.updateProduct(convertValue) as Response;
+        setLoading(false);
+        if (result && result.code === 1) {
+            Alert.alert('Sucess', 'Do you want to continue ?',
+                [
+                    { text: 'Cancel', onPress: handleCancel },
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            );
+        }
+    };
+
     const renderHeader = () => {
         return (
             <View
@@ -72,7 +93,7 @@ const Detail = ({ navigation, route }: DetailScreenProps) => {
 
                 <TouchableOpacity
                     style={styles.buttonBack}
-                    onPress={() => navigation.goBack()}
+                    onPress={navigateBack}
                 >
                     <AntDesign
                         name="arrowleft"
@@ -101,24 +122,7 @@ const Detail = ({ navigation, route }: DetailScreenProps) => {
                             initialValues={{
                                 ...product,
                             }}
-                            onSubmit={async (values) => {
-                                setLoading(true);
-                                const convertValue: Product = {
-                                    ...values,
-                                    profit: Number(values.profit),
-                                };
-                                const result: Response = await actions.updateProduct(convertValue) as Response;
-                                setLoading(false);
-                                if (result && result.code === 1) {
-                                    Alert.alert('Sucess', 'Do you want to continue ?',
-                                        [
-                                            { text: 'Cancel', onPress: handleCancel },
-                                            { text: 'OK', onPress: () => console.log('OK Pressed') },
-                                        ],
-                                        { cancelable: false }
-                                    );
-                                }
-                            }}
+                            onSubmit={onSubmit}
                         >
                             {({ handleSubmit, values }) => {
                                 console.log('Render form: ', values);

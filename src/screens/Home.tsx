@@ -117,6 +117,8 @@ const Home = ({ navigation, route }: HomeScreenProps) => {
         );
     };
 
+    const navigatePickFile = () => navigation.navigate('PickFile');
+
     const renderHeader = () => {
         return (
 
@@ -125,8 +127,7 @@ const Home = ({ navigation, route }: HomeScreenProps) => {
             >
                 <TouchableOpacity
                     style={styles.buttonRefresh}
-
-                    onPress={() => navigation.navigate('PickFile')}
+                    onPress={navigatePickFile}
                 >
                     <AntDesign name="addfile" color={COLORS.white} size={35} />
                 </TouchableOpacity>

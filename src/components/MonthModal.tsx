@@ -28,6 +28,8 @@ const MonthModal = ({ show, setShow, date, setDate, title }: Props) => {
         [date, showPicker],
     );
 
+    const onPress = () => setShow(true);
+
     return (
         <View
             style={styles.containerDate}
@@ -42,7 +44,7 @@ const MonthModal = ({ show, setShow, date, setDate, title }: Props) => {
             }
             <TouchableOpacity
                 style={styles.buttonDate}
-                onPress={() => setShow(true)}
+                onPress={onPress}
             >
                 <AntDesign name="calendar" size={30} color={COLORS.white} />
             </TouchableOpacity>

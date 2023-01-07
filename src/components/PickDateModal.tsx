@@ -21,6 +21,36 @@ const PickDateModal = ({ show, setShow, state, setDateChoose }: Props) => {
     const [showStart, setShowStart] = React.useState(false);
     const [showEnd, setShowEnd] = React.useState(false);
 
+    const onPress = () => setShow(false);
+
+    const handlePickDate = () => {
+        if (isAfter(start, end)) {
+            Alert.alert('The begin date must be before the end date!');
+        }
+        else if (isFuture(end)) {
+            Alert.alert('Invalid date');
+        }
+        else if (state === 'week' && differenceInWeeks(end, start) < 2) {
+            Alert.alert('The distance must be greater than or equal 2 weeks');
+        }
+        else if (state === 'month' && differenceInMonths(end, start) < 2) {
+            Alert.alert('The distance must be greater or equal than 2 months');
+        }
+        else {
+            setShow(false);
+            setDateChoose(`${format(start, 'dd/MM/yyyy')} - ${format(end, 'dd/MM/yyyy')}`);
+            if (state === 'date') {
+                actions.chartDays(start, end);
+            }
+            else if (state === 'week') {
+                actions.chartWeeks(start, end);
+            }
+            else {
+                actions.chartMonths(start, end);
+            }
+        }
+    };
+
     return (
         <Modal
             animationType="slide"
@@ -36,7 +66,7 @@ const PickDateModal = ({ show, setShow, state, setDateChoose }: Props) => {
             />
             <Pressable
                 style={styles.contain}
-                onPress={() => setShow(false)}
+                onPress={onPress}
             >
                 <View
                     style={styles.viewContain}
@@ -86,33 +116,7 @@ const PickDateModal = ({ show, setShow, state, setDateChoose }: Props) => {
                         <TouchableOpacity
                             style={styles.button}
 
-                            onPress={() => {
-                                if (isAfter(start, end)) {
-                                    Alert.alert('The begin date must be before the end date!');
-                                }
-                                else if (isFuture(end)) {
-                                    Alert.alert('Invalid date');
-                                }
-                                else if (state === 'week' && differenceInWeeks(end, start) < 2) {
-                                    Alert.alert('The distance must be greater than or equal 2 weeks');
-                                }
-                                else if (state === 'month' && differenceInMonths(end, start) < 2) {
-                                    Alert.alert('The distance must be greater or equal than 2 months');
-                                }
-                                else {
-                                    setShow(false);
-                                    setDateChoose(`${format(start, 'dd/MM/yyyy')} - ${format(end, 'dd/MM/yyyy')}`);
-                                    if (state === 'date') {
-                                        actions.chartDays(start, end);
-                                    }
-                                    else if (state === 'week') {
-                                        actions.chartWeeks(start, end);
-                                    }
-                                    else {
-                                        actions.chartMonths(start, end);
-                                    }
-                                }
-                            }}
+                            onPress={handlePickDate}
                         >
                             <Text style={{ ...FONTS.h3, color: COLORS.white }}>Ok</Text>
                         </TouchableOpacity>

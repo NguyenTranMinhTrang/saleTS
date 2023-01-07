@@ -15,33 +15,40 @@ const Combobox = ({ setItem }: Props) => {
 
     const products: Product[] = useTypedSelector((state) => state.product.products);
 
+    const renderCustomizedRowChild = (item: Product) => {
+        return (
+            <ItemPicker name={item.name} />
+        );
+    };
+
+    const renderDropdownIcon = (isOpened: boolean) => {
+        return <MaterialIcons name={isOpened ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} color={COLORS.white} size={30} />;
+    };
+
+    const buttonTextAfterSelection = (selectedItem: Product) => {
+        return selectedItem.name;
+    };
+
+    const emptyFunction = () => { };
+
     return (
         <SelectDropdown
             data={products}
             onSelect={(selectedItem: Product) => {
                 setItem(selectedItem);
             }}
-            renderCustomizedRowChild={(item: Product) => {
-                return (
-                    <ItemPicker name={item.name} />
-                );
-
-            }}
+            renderCustomizedRowChild={renderCustomizedRowChild}
             rowStyle={styles.rowStyle}
 
             buttonStyle={styles.buttonStyle}
 
             buttonTextStyle={styles.buttonText}
 
-            renderDropdownIcon={isOpened => {
-                return <MaterialIcons name={isOpened ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} color={COLORS.white} size={30} />;
-            }}
+            renderDropdownIcon={renderDropdownIcon}
 
-            buttonTextAfterSelection={(selectedItem) => {
-                return selectedItem.name;
-            }}
+            buttonTextAfterSelection={buttonTextAfterSelection}
 
-            onChangeSearchInputText={() => { }}
+            onChangeSearchInputText={emptyFunction}
         />
     );
 };

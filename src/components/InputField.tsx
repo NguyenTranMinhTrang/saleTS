@@ -16,7 +16,11 @@ interface OtherProps {
 
 
 const InputField = ({ field, title, meta, style, textColor, keyBoard }: OtherProps & FieldProps) => {
+
     const { error, touched } = meta;
+
+    const onChangeText = (text: string) => field.onChange(field.name)(text);
+
     return (
         <View
             style={[{
@@ -28,7 +32,7 @@ const InputField = ({ field, title, meta, style, textColor, keyBoard }: OtherPro
                 numberOfLines={4}
                 style={styles.textInput}
                 value={`${field.value}`}
-                onChangeText={(text) => field.onChange(field.name)(text)}
+                onChangeText={onChangeText}
                 onBlur={field.onBlur(field.name)}
                 keyboardType={keyBoard ? keyBoard : 'default'}
             />

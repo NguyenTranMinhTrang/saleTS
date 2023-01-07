@@ -5,6 +5,7 @@ import { COLORS, FONTS, SIZES } from '../constants';
 import Combobox from './Combobox';
 import InputField from './InputField';
 import { FastField, FieldProps, FormikErrors } from 'formik';
+import { Product } from '../models';
 
 type Item = {
     amount: number,
@@ -35,6 +36,11 @@ type Props = {
 }
 
 const ModalAdd = ({ show, setShow, index, setFieldValue, errors }: Props) => {
+
+    const onPress = () => setShow(false);
+
+    const setItem = (item: Product) => setFieldValue(`itemDetail[${index}].item`, item);
+
     return (
         <Modal
             animationType="slide"
@@ -50,7 +56,7 @@ const ModalAdd = ({ show, setShow, index, setFieldValue, errors }: Props) => {
             />
             <Pressable
                 style={styles.press}
-                onPress={() => setShow(false)}
+                onPress={onPress}
             >
                 <View style={styles.container}>
                     <Text style={{ ...FONTS.h2, color: COLORS.black }}>Add Product</Text>
@@ -58,7 +64,7 @@ const ModalAdd = ({ show, setShow, index, setFieldValue, errors }: Props) => {
                         style={styles.containerCombobox}
                     >
                         <Text style={{ ...FONTS.h3, color: COLORS.black, marginRight: SIZES.padding }}>Item: </Text>
-                        <Combobox setItem={(item) => setFieldValue(`itemDetail[${index}].item`, item)} />
+                        <Combobox setItem={setItem} />
 
                     </View>
                     {

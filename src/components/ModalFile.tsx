@@ -10,6 +10,9 @@ type Props = {
 }
 
 const ModalFile = ({ show, setShow, children }: Props) => {
+
+    const onPress = () => setShow(false);
+
     return (
         <Modal
             animationType="slide"
@@ -22,7 +25,7 @@ const ModalFile = ({ show, setShow, children }: Props) => {
             >
                 <TouchableOpacity
                     style={styles.buttonBack}
-                    onPress={() => setShow(false)}
+                    onPress={onPress}
                 >
                     <AntDesign size={40} color={COLORS.black} name="arrowleft" />
                 </TouchableOpacity>

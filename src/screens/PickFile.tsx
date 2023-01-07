@@ -25,7 +25,6 @@ const PickFile = ({ navigation }: PickFileScreenProps) => {
             setFileResponse((prev: DocumentPickerResponse[]) => {
                 const newArray: DocumentPickerResponse[] = _.concat(prev, response);
                 const filterArray: DocumentPickerResponse[] = _.uniqBy(newArray, 'name');
-                console.log('filterArray: ', filterArray);
                 const filterType = _.filter(filterArray, (file) => {
                     const type: string = file.type as string;
                     if (type === 'application/pdf' || _.startsWith(type, 'image/')) {

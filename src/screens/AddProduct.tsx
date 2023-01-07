@@ -67,6 +67,8 @@ const AddProduct = ({ navigation, route }: AddProductScreenProps) => {
         setLoading(false);
     };
 
+    const navigationGoback = () => navigation.goBack();
+
     const renderHeader = () => {
         return (
             <View
@@ -75,7 +77,7 @@ const AddProduct = ({ navigation, route }: AddProductScreenProps) => {
                 <Text style={{ ...FONTS.h2, color: COLORS.white }}>Add Product</Text>
                 <TouchableOpacity
                     style={styles.buttonBack}
-                    onPress={() => navigation.goBack()}
+                    onPress={navigationGoback}
                 >
                     <AntDesign
                         name="arrowleft"

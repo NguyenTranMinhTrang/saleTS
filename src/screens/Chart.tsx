@@ -6,6 +6,25 @@ import MainLayout from './MainLayout';
 import { ChartScreenProps } from '../navigation/types';
 
 const Chart = ({ navigation }: ChartScreenProps) => {
+
+    const navigateDate = () => navigation.navigate('ChartDay', {
+        state: 'date',
+        formatDate: 'dd/MM/yyyy',
+        initialState: { start: subDays(new Date(), 7), end: new Date() },
+    });
+
+    const navigateWeek = () => navigation.navigate('ChartDay', {
+        state: 'week',
+        formatDate: 'dd/MM/yyyy',
+        initialState: { start: subDays(new Date(), 30), end: new Date() },
+    });
+
+    const navigateMonth = () => navigation.navigate('ChartDay', {
+        state: 'month',
+        formatDate: 'dd/MM',
+        initialState: { start: subDays(new Date(), 180), end: new Date() },
+    });
+
     return (
         <MainLayout>
             <View style={styles.container}>
@@ -24,33 +43,21 @@ const Chart = ({ navigation }: ChartScreenProps) => {
                     >
                         <TouchableOpacity
                             style={styles.buttonContain}
-                            onPress={() => navigation.navigate('ChartDay', {
-                                state: 'date',
-                                formatDate: 'dd/MM/yyyy',
-                                initialState: { start: subDays(new Date(), 7), end: new Date() },
-                            })}
+                            onPress={navigateDate}
                         >
                             <Text style={{ ...FONTS.h3, color: COLORS.black }}>Theo Ngày</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={styles.buttonContain}
-                            onPress={() => navigation.navigate('ChartDay', {
-                                state: 'week',
-                                formatDate: 'dd/MM/yyyy',
-                                initialState: { start: subDays(new Date(), 30), end: new Date() },
-                            })}
+                            onPress={navigateWeek}
                         >
                             <Text style={{ ...FONTS.h3, color: COLORS.black }}>Theo Tuần</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={styles.buttonContain}
-                            onPress={() => navigation.navigate('ChartDay', {
-                                state: 'month',
-                                formatDate: 'dd/MM',
-                                initialState: { start: subDays(new Date(), 180), end: new Date() },
-                            })}
+                            onPress={navigateMonth}
                         >
                             <Text style={{ ...FONTS.h3, color: COLORS.black }}>Theo Tháng</Text>
                         </TouchableOpacity>

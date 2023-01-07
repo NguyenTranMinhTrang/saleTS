@@ -69,7 +69,6 @@ const Input = ({ navigation }: InputScreenProps) => {
     };
 
     const handleAddInput = async (values: FormValues) => {
-        console.log('Create');
         setLoading(true);
         const result: Response = await actions.addInput(values) as Response;
         setLoading(false);
@@ -83,7 +82,6 @@ const Input = ({ navigation }: InputScreenProps) => {
             );
         }
     };
-
 
     const renderHeader = () => {
         return (

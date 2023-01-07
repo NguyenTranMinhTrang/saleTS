@@ -103,8 +103,6 @@ export const getToken = async () => {
             console.log('Get error: ', tokenFromDatabase.error);
         }
     }
-
-    console.log('Done token: ', token);
 };
 
 export const sendNotification = async (title: string, body: string, data: any) => {

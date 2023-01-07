@@ -16,6 +16,17 @@ type Props = {
 
 const DateModal = ({ show, setShow, date, setDate, title, textColor }: Props) => {
 
+    const onPress = () => setShow(true);
+
+    const onConfirm = (dateConfirm: Date) => {
+        setDate(dateConfirm);
+        setShow(false);
+    };
+
+    const onCancel = () => {
+        setShow(false);
+    };
+
     return (
         <View
         >
@@ -32,7 +43,7 @@ const DateModal = ({ show, setShow, date, setDate, title, textColor }: Props) =>
                 }
                 <TouchableOpacity
                     style={styles.buttonDate}
-                    onPress={() => setShow(true)}
+                    onPress={onPress}
                 >
                     <AntDesign name="calendar" size={30} color={COLORS.white} />
                 </TouchableOpacity>
@@ -46,13 +57,8 @@ const DateModal = ({ show, setShow, date, setDate, title, textColor }: Props) =>
                     open={show}
                     date={date}
                     mode={'date'}
-                    onConfirm={(dateConfirm) => {
-                        setDate(dateConfirm);
-                        setShow(false);
-                    }}
-                    onCancel={() => {
-                        setShow(false);
-                    }}
+                    onConfirm={onConfirm}
+                    onCancel={onCancel}
                 />
 
             }

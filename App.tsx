@@ -12,7 +12,7 @@ import codePush from 'react-native-code-push';
 
 LogBox.ignoreLogs(['Non-serializable']);
 LogBox.ignoreLogs(['new NativeEventEmitter']);
-const TIME: number = 5;
+const TIME: number = 60;
 const options = {
   checkFrequency: codePush.CheckFrequency.MANUAL,
   updateDialog: {

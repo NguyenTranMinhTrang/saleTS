@@ -24,6 +24,7 @@ export type StackParamList = {
     AddProduct: { reFresh: () => Promise<void> },
     ChartDay: { state: string, formatDate: string, initialState: { start: Date, end: Date } },
     PickFile: undefined,
+    QRScreen: undefined,
 }
 
 export type HomeScreenProps = CompositeScreenProps<
@@ -38,6 +39,8 @@ export type AddProductScreenProps = NativeStackScreenProps<StackParamList, 'AddP
 export type ChartDayScreenProps = NativeStackScreenProps<StackParamList, 'ChartDay'>;
 
 export type PickFileScreenProps = NativeStackScreenProps<StackParamList, 'PickFile'>;
+
+export type QRScreenScreenProps = NativeStackScreenProps<StackParamList, 'QRScreen'>;
 
 export type ChartScreenProps = CompositeScreenProps<
     BottomTabScreenProps<TabParamList, 'Chart'>,

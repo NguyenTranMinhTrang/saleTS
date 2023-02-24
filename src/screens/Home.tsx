@@ -13,6 +13,7 @@ import {
     NativeScrollEvent,
     ListRenderItem,
     ListRenderItemInfo,
+    PermissionsAndroid,
 } from 'react-native';
 import { COLORS, FONTS, SIZES } from '../constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -71,6 +72,26 @@ const Home = ({ navigation, route }: HomeScreenProps) => {
                     return Linking.openURL(url);
                 }
             }).catch(err => console.error('An error occurred', err));
+    };
+
+    const requestCameraPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA
+            );
+            return granted;
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
+    const onOpenCamera = async () => {
+        const permission = await requestCameraPermission();
+        if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+            navigation.navigate('QRScreen');
+        } else {
+            Alert.alert('Permission to use camera denied');
+        }
     };
 
     const reFresh = async () => {
@@ -134,9 +155,9 @@ const Home = ({ navigation, route }: HomeScreenProps) => {
 
                 <TouchableOpacity
                     style={styles.buttonRefresh}
-                    onPress={onShare}
+                    onPress={onOpenCamera}
                 >
-                    <Entypo name="share" color={COLORS.white} size={35} />
+                    <Entypo name="camera" color={COLORS.white} size={25} />
                 </TouchableOpacity>
 
                 <Text style={{ ...FONTS.h2, color: COLORS.white }}>List Product</Text>

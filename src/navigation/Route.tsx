@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer, getStateFromPath, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './Tabs';
-import { Detail, AddProduct, ChartDay, PickFile } from '../screens';
+import { Detail, AddProduct, ChartDay, PickFile, QRScreen } from '../screens';
 import { navigationRef } from '../RootNavigation';
 import { StackParamList } from './types';
 
@@ -97,6 +97,11 @@ const Route = () => {
                 <Stack.Screen
                     name="PickFile"
                     component={PickFile}
+                />
+
+                <Stack.Screen
+                    name="QRScreen"
+                    component={QRScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

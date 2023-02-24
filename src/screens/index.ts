@@ -6,6 +6,7 @@ import Store from './Store';
 import AddProduct from './AddProduct';
 import ChartDay from './ChartDay';
 import PickFile from './PickFile';
+import QRScreen from './QRScreen';
 
 export {
     Home,
@@ -16,4 +17,5 @@ export {
     AddProduct,
     ChartDay,
     PickFile,
+    QRScreen,
 };
